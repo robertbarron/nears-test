@@ -24,37 +24,39 @@ var behavior = {
 				if (response) {
 					JPLoad.loadTemplate(response, $('#new-item').attr('id'), undefined, function (response) {
 						$('#new-item').removeClass('display-none');
-						_this.addItem();
+						
 					});
 				}
 			});
 		});
+
+		$('#new-item').on('click', '.add-item-button', function (e) {
+			var songTitle = $('#new-item .name').val();
+			_this.addItem(songTitle);
+		});
 	},
+
 	getItem : function () {
 		var _this = this;
 		_this.counter++;
 		return _this.counter;
 	},
 
-	addItem : function () {
+	addItem : function (songTitle) {
 		var _this = this,
 			currentId = _this.getItem();
 
-		$('#new-item').on('click', '.add-item-button', function (e) {
-			var songName = $('#new-item .name').val();
-
-			JPLoad.getTemplate('../templates/item.tpl', function (response) {
-				if (response) {
-					$('#new-item').addClass('display-none').empty();
-					JPLoad.appendHTML(response, $hookItem.attr('id'),{
-						'id' : currentId,
-						'song-name' : songName
-					},
-					function (response) {
-						//
-					});
-				}
-			});
+		JPLoad.getTemplate('../templates/item.tpl', function (response) {
+			if (response) {
+				$('#new-item').addClass('display-none').empty();
+				JPLoad.appendHTML(response, $hookItem.attr('id'),{
+					'id' : currentId,
+					'song-name' : songTitle
+				},
+				function (response) {
+					return true;
+				});
+			}
 		});
 	}
 };
